@@ -1,6 +1,4 @@
-# aws-eks-tf — Private EKS Security Lab
-
-Minimal, cost-optimized, **private** EKS cluster for a security research lab on AWS. Designed to host security agents (an EDR DaemonSet plus a cluster-level helper StatefulSet) alongside intentionally vulnerable workloads (misconfigured nginx, DVWA, etc.) without exposing those workloads to the internet.
+# aws-eks-tf
 
 ## What gets deployed
 
@@ -24,8 +22,7 @@ Minimal, cost-optimized, **private** EKS cluster for a security research lab on 
   aws configure sso            # or: aws configure
   aws sts get-caller-identity  # sanity check
   ```
-- The applying principal needs enough IAM to create VPC, EKS, EC2, IAM, KMS, and CloudWatch Logs resources. For a personal lab, an admin-equivalent user is easiest; tighten this down before reuse in a shared account.
-- No service quotas to pre-raise in a fresh account for this footprint.
+- The applying principal needs enough IAM to create VPC, EKS, EC2, IAM, KMS, and CloudWatch Logs resources. 
 
 ## Deploy
 
@@ -97,12 +94,8 @@ NAT Gateways and the control plane accrue cost by the hour even when idle — de
 | **Total (2 nodes, Spot, single NAT)**                | **~$120/mo**  |
 
 
-## Agent sizing note
+## Node sizing note
 
-This module does **not** install any specific agent — you bring your own via Helm chart or manifests. The node group is sized assuming a typical EDR / workload-monitoring agent:
-
-- 1 agent pod per node (DaemonSet) consuming ~500m CPU / 512 Mi–1 GiB memory
-- 1 cluster-level helper pod (StatefulSet) — enable `enable_ebs_csi_driver` so its PVC provisions
 
 `t3.small` (2 vCPU burstable, 2 GiB RAM) leaves enough headroom for an agent of that size plus a handful of lightweight lab pods. If you see OOMKilled agent pods or `MemoryPressure` on nodes: when `use_spot_instances = false`, bump `node_instance_type` to `t3.medium` (4 GiB). When Spot is on (default), replace `spot_instance_types` with a 4 GiB list, e.g. `["t3.medium", "t3a.medium", "t2.medium"]`.
 
