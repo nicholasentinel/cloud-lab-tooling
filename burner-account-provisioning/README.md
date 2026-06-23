@@ -23,7 +23,7 @@ The script needs two things to talk to the API:
 | Setting    | Required | Purpose                                                        |
 | ---------- | -------- | -------------------------------------------------------------- |
 | `HOST`     | yes      | API hostname, e.g. `203-0-113-10.sslip.io` (no scheme/slash).  |
-| `API_KEY`  | no\*     | Your personal `X-API-Key`. \*Required for every action except the health check; prompted if not preset. |
+| `API_KEY`  | yes      | Your personal `X-API-Key`. Required for every action except the health check, so in practice always — prompted (hidden) if not preset. |
 
 There are three sources for each value. **Precedence: environment variable →
 config file → interactive prompt.**
@@ -64,9 +64,10 @@ file and you don't need to re-export it.
 - **`HOST` is required.** If it can't be found in the environment or the config
   file, you're prompted for it. If you still don't supply one, the script prints
   a message saying it's required and exits.
-- **`API_KEY` is resolved lazily.** You're prompted (hidden input) the first time
-  an authenticated action runs, and the value is saved for next time. The health
-  check needs no key.
+- **`API_KEY` is required** for every action except the health check — so for
+  any real use you need one. It's resolved lazily: you're prompted (hidden input)
+  the first time an authenticated action runs, and the value is saved for next
+  time. The script is effectively unusable without a key.
 
 ## Usage
 

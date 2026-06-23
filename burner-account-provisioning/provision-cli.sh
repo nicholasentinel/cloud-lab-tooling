@@ -113,8 +113,9 @@ resolve_host() {
 }
 
 ensure_key() {
-    # Lazily prompt for the API key the first time an authenticated action runs,
-    # then persist it so later runs don't re-prompt.
+    # Prompt for the API key if we don't already have one (from env, the config
+    # file, or an earlier prompt), then persist it so later runs don't re-prompt.
+    # Called once at startup and again before each authed action as a safety net.
     if [ -z "$API_KEY" ]; then
         read -rs -p "X-API-Key: " API_KEY; echo
         [ -n "$API_KEY" ] && config_set API_KEY "$API_KEY"
@@ -418,8 +419,8 @@ esac
 
 # Resolve HOST / API_KEY: an exported env var WINS and is persisted to the
 # config file; otherwise the stored config value is used; otherwise we prompt
-# (HOST is required — resolve_host exits if it stays empty; the key is prompted
-# lazily at the first authed call). Detection here never aborts the REPL.
+# (HOST is required — resolve_host exits if it stays empty). Detection here never
+# aborts the REPL.
 if [ -n "$ENV_HOST" ]; then
     HOST="$ENV_HOST"
     echo "Detected API hostname in the environment — saving to $(basename "$CONFIG_FILE")."
@@ -435,6 +436,14 @@ else
 fi
 
 resolve_host
+
+# Confirm a key is present (from env or config); if not, prompt for it now —
+# right after the hostname — so the REPL starts ready. Only the health check
+# works without a key, so we warn but don't hard-exit if it's left blank.
+if [ -z "$API_KEY" ]; then
+    ensure_key || echo "Continuing without a key — only the health check will work until one is set." >&2
+fi
+
 echo "Target: https://$HOST   (TLS via Let's Encrypt — no --cacert)"
 
 while :; do
