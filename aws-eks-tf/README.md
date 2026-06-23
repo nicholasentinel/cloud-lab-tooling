@@ -96,9 +96,6 @@ NAT Gateways and the control plane accrue cost by the hour even when idle — de
 | KMS CMK                                              | ~$1           |
 | **Total (2 nodes, Spot, single NAT)**                | **~$120/mo**  |
 
-> **NAT is the dominant variable cost on AWS**, unlike GCP where Cloud NAT is almost free for a lab-scale workload. Setting `single_nat_gateway = false` roughly doubles the NAT line item (~$32/mo per additional AZ). Removing NAT entirely is possible for a pure offline lab but breaks EKS add-on installs, image pulls from public registries, and any in-cluster agent that needs to reach an external management/ingest endpoint — you would need VPC endpoints for ECR + S3 + STS + EKS at minimum to compensate.
-
-The EKS control plane is the dominant fixed cost (~$73/mo). Unlike GKE, AWS does not offer a free zonal cluster tier, so there's no equivalent "drop to $25/mo" escape hatch. Switching `use_spot_instances = false` adds ~$10-12/mo per t3.small on-demand.
 
 ## Agent sizing note
 
