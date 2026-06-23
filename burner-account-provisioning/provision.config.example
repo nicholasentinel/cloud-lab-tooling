@@ -15,8 +15,8 @@
 
 # API hostname — no scheme, no trailing slash. REQUIRED.
 # Replace the placeholder below with your control-plane hostname.
-HOST=203-0-113-10.sslip.io
+HOST=<example-ip>.sslip.io
 
 # Your personal X-API-Key. Optional here: if left blank you'll be prompted
 # (hidden) at the first authenticated action, and the value is saved for reuse.
-API_KEY=
+API_KEY=<api key>
