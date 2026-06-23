@@ -30,12 +30,12 @@ cp provision.config.example provision.config   # then fill in HOST and API_KEY
 Settings can also come from environment variables, which override the config
 file and are written back to it.
 
-See the full guide: [`burner-account-provisioning/provision-cli.README.md`](burner-account-provisioning/README.md)
+See the full guide: [`burner-account-provisioning/README.md`](burner-account-provisioning/README.md)
 
-- [Dependencies](burner-account-provisioning/provision-cli.README.md#dependencies)
-- [Configuration: config file vs. environment variables](burner-account-provisioning/provision-cli.README.md#configuration-provisionconfig-vs-environment-variables)
-- [Usage](burner-account-provisioning/provision-cli.README.md#usage)
-- [Roles](burner-account-provisioning/provision-cli.README.md#roles)
+- [Dependencies](burner-account-provisioning/README.md#dependencies)
+- [Configuration: config file vs. environment variables](burner-account-provisioning/README.md#configuration-provisionconfig-vs-environment-variables)
+- [Usage](burner-account-provisioning/README.md#usage)
+- [Roles](burner-account-provisioning/README.md#roles)
 
 ---
 
