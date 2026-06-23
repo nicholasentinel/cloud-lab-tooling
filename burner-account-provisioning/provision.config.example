@@ -1,0 +1,22 @@
+# provision.config.example — template for provision-cli.sh settings.
+#
+# Copy this to provision.config (in the same directory) and fill in your values:
+#
+#     cp provision.config.example provision.config
+#     chmod 600 provision.config        # it will hold your API key
+#
+# provision-cli.sh reads these at startup. An exported environment variable of
+# the same name OVERRIDES the file value and is written back here on the next
+# run. Format is KEY=value, one per line; '#' comments and blank lines are
+# ignored.
+#
+# Never commit your filled-in provision.config — it holds a credential and is
+# gitignored. This .example file is safe to commit; it contains no real values.
+
+# API hostname — no scheme, no trailing slash. REQUIRED.
+# Replace the placeholder below with your control-plane hostname.
+HOST=203-0-113-10.sslip.io
+
+# Your personal X-API-Key. Optional here: if left blank you'll be prompted
+# (hidden) at the first authenticated action, and the value is saved for reuse.
+API_KEY=

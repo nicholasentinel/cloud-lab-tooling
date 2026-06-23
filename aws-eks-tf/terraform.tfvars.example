@@ -1,0 +1,39 @@
+# Copy to terraform.tfvars and edit before running `terraform apply`.
+
+# REQUIRED: lock the control plane down to your workstation(s).
+# Find your current public IP:  curl -s https://ifconfig.me
+# Then use <that-ip>/32. 0.0.0.0/0 is rejected by validation.
+authorized_cidrs = [
+  "203.0.113.42/32",
+  # "X.X.X.X/32",  # mgmt-vm-gcp — from gcp-management-tf output nat_public_ip
+]
+
+# REQUIRED: IAM principal ARNs to grant cluster-admin via EKS access entries.
+# Must be non-empty — `bootstrap_cluster_creator_admin_permissions = false`,
+# so without at least one entry no one can kubectl into the cluster.
+# Typically two entries:
+#   1. Your workstation IAM user/role ARN — `aws sts get-caller-identity --query Arn`
+#   2. The mgmt VM's federated role ARN — the `mgmt_vm_role_arn` output of this
+#      stack after the first apply, or pre-compute as
+#      arn:aws:iam::<account>:role/<cluster_name>-mgmt-vm
+cluster_admin_principal_arns = [
+  "arn:aws:iam::123456789012:user/you",
+  # "arn:aws:iam::123456789012:role/sec-lab-mgmt-vm",  # from mgmt_vm_role_arn output
+]
+
+# Optional overrides — defaults are fine for most lab use.
+# region                           = "us-west-2"
+# cluster_name                     = "sec-lab"
+# cluster_version                  = "1.31"
+# node_instance_type               = "t3.small"
+# node_count                       = 2
+# node_disk_size_gb                = 20
+# use_spot_instances               = true
+# spot_instance_types              = ["t3.small", "t3a.small", "t2.small"]  # Spot fleet diversification; only consulted when use_spot_instances = true.
+# vpc_cidr                         = "10.30.0.0/16"
+# availability_zone_count          = 2
+# single_nat_gateway               = true
+# enable_vpc_flow_logs             = false
+# flow_logs_retention_days         = 7
+# control_plane_log_retention_days = 7
+# enable_ebs_csi_driver            = true
